@@ -1,12 +1,12 @@
 export const ALL_YEARS = [
-    2008,
-    2004,
-    2012,
     2000,
+    2002,
+    2004,
     2006,
+    2008,
     2010,
-    2002
-];
+    2012
+]
 
 export const ALL_COUNTRIES = [
     "United States",

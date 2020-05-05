@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { render } from "react-dom";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-enterprise";
 
@@ -14,10 +13,12 @@ import { ALL_COUNTRIES, ALL_YEARS } from './lists.js';
 import CrudRenderer from './Components/CrudRenderer';
 import DropdownEditor from './Components/DropdownEditor';
 
+import MyDatePicker from './Components/MyDatePicker';
+
 function App() {
   const columnDefs = [
     { headerName: 'Athlete (agTextCellEditor)', field: "athlete", cellEditor: 'agTextCellEditor' },
-    { headerName: "Age (simpleEditor)", field: "age", cellEditor: 'simpleEditor' },
+    // { headerName: "Age (simpleEditor)", field: "age", cellEditor: 'simpleEditor' },
     {
       headerName: "Country (validationEditor)",
       field: "country",
@@ -35,31 +36,61 @@ function App() {
         values: ALL_YEARS
       }
     },
-    { headerName: "Date (Datepicker)", field: "date" },
+    {
+      headerName: "Date (Datepicker)",
+      field: "date",
+      minWidth: 400,
+      filter: 'agDateColumnFilter',
+      filterParams: {
+        suppressAndOrCondition: true,
+        comparator: function (filterLocalDateAtMidnight, cellValue) {
+          var dateAsString = cellValue;
+          var dateParts = dateAsString.split('/');
+          var cellDate = new Date(
+            Number(dateParts[2]),
+            Number(dateParts[1]) - 1,
+            Number(dateParts[0])
+          );
+          if (filterLocalDateAtMidnight.getTime() === cellDate.getTime()) {
+            return 0;
+          }
+          if (cellDate < filterLocalDateAtMidnight) {
+            return -1;
+          }
+          if (cellDate > filterLocalDateAtMidnight) {
+            return 1;
+          }
+        }
+      },
+    },
     { headerName: "Sport (Modal)", field: "sport" },
     // { headerName: "Gold", field: "gold" },
     // { headerName: "Silver", field: "silver" },
     // { headerName: "Bronze", field: "bronze" },
     // { headerName: "Total", field: "total" },
-    {
-      headerName: 'Edit',
-      colId: 'edit',
-      cellRenderer: 'crudRenderer',
-      editable: false,
-      minWidth: 200
-    }
+    // {
+    //   headerName: 'Edit',
+    //   colId: 'edit',
+    //   cellRenderer: 'crudRenderer',
+    //   editable: false,
+    //   minWidth: 200
+    // }
   ];
 
   const defaultColDef = {
     editable: true,
+    filter: true
   };
 
   const frameworkComponents = {
     simpleEditor: SimpleEditor,
     validationEditor: ValidationEditor,
     crudRenderer: CrudRenderer,
-    dropdownEditor: DropdownEditor
+    dropdownEditor: DropdownEditor,
+    agDateInput: MyDatePicker
   };
+
+
 
   const [rowData, setRowData] = useState(null);
   const [gridApi, setGridApi] = useState(null);
@@ -108,6 +139,7 @@ function App() {
           editType="fullRow"
           onRowEditingStarted={onRowEditingStarted}
           onRowEditingStopped={onRowEditingStopped}
+          floatingFilter
         // singleClickEdit
         />
       </div>
