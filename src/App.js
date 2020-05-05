@@ -17,7 +17,7 @@ import MyDatePicker from './Components/MyDatePicker';
 
 function App() {
   const columnDefs = [
-    { headerName: 'Athlete (agTextCellEditor)', field: "athlete", cellEditor: 'agTextCellEditor' },
+    { headerName: 'Athlete', field: "athlete", cellEditor: 'agTextCellEditor' },
     // { headerName: "Age (simpleEditor)", field: "age", cellEditor: 'simpleEditor' },
     {
       headerName: "Country (validationEditor)",
@@ -30,7 +30,6 @@ function App() {
     {
       headerName: "Year (Dropdown)",
       field: "year",
-      minWidth: 200,
       cellEditor: 'dropdownEditor',
       cellEditorParams: {
         values: ALL_YEARS
@@ -39,7 +38,6 @@ function App() {
     {
       headerName: "Date (Datepicker)",
       field: "date",
-      minWidth: 400,
       filter: 'agDateColumnFilter',
       filterParams: {
         suppressAndOrCondition: true,
@@ -68,13 +66,13 @@ function App() {
     // { headerName: "Silver", field: "silver" },
     // { headerName: "Bronze", field: "bronze" },
     // { headerName: "Total", field: "total" },
-    // {
-    //   headerName: 'Edit',
-    //   colId: 'edit',
-    //   cellRenderer: 'crudRenderer',
-    //   editable: false,
-    //   minWidth: 200
-    // }
+    {
+      headerName: 'Edit',
+      colId: 'edit',
+      cellRenderer: 'crudRenderer',
+      editable: false,
+      minWidth: 250
+    }
   ];
 
   const defaultColDef = {
@@ -103,10 +101,12 @@ function App() {
     fetch("https://raw.githubusercontent.com/ag-grid/ag-grid/master/packages/ag-grid-docs/src/olympicWinnersSmall.json")
       .then(res => res.json())
       .then(data => {
-        setRowData(data.slice(0, 5));
+        setRowData(data.slice(0, 100));
       });
 
-    params.columnApi.autoSizeAllColumns();
+    setTimeout(() => {
+      params.columnApi.autoSizeAllColumns();
+    }, 500);
     // params.api.sizeColumnsToFit();
   }
 

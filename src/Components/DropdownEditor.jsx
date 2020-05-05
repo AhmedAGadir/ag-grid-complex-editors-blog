@@ -52,7 +52,7 @@ export default class extends Component {
                     onChange={this.handleChange}
                 >
                     {this.props.values.map(value => (
-                        <MenuItem value={value}>{value}</MenuItem>
+                        <MenuItem value={value} key={value}>{value}</MenuItem>
                     ))}
                 </MySelect>
             </MyFormControl>

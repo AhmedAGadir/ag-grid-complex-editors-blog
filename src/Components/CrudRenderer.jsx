@@ -1,5 +1,11 @@
 import React, { Component } from 'react';
-import Button from '@material-ui/core/Button'
+import Button from '@material-ui/core/Button';
+
+import { styled } from '@material-ui/core/styles';
+
+const MyButton = styled(Button)({
+    margin: '0 10px'
+});
 
 export default class extends Component {
     constructor(props) {
@@ -38,17 +44,17 @@ export default class extends Component {
 
     render() {
         const startEditingButtons = (
-            <div>
-                <Button color="primary" variant="outlined" onClick={this.startEditing}>Edit</Button>
-                <Button color="primary" variant="outlined" onClick={this.deleteRow}>Delete</Button>
-            </div>
+            <>
+                <MyButton color="primary" variant="outlined" onClick={this.startEditing}>Edit</MyButton>
+                <MyButton color="primary" variant="outlined" onClick={this.deleteRow}>Delete</MyButton>
+            </>
         );
 
         const stopEditingButtons = (
-            <div>
-                <Button color="primary" variant="outlined" onClick={() => this.stopEditing(false)}>Update</Button>
-                <Button color="primary" variant="outlined" onClick={() => this.stopEditing(true)}>Cancel</Button>
-            </div>
+            <>
+                <MyButton color="primary" variant="outlined" onClick={() => this.stopEditing(false)}>Update</MyButton>
+                <MyButton color="primary" variant="outlined" onClick={() => this.stopEditing(true)}>Cancel</MyButton>
+            </>
         );
         return (
             <div>
