@@ -75,8 +75,8 @@ function App() {
     // { headerName: "Bronze", field: "bronze" },
     // { headerName: "Total", field: "total" },
     {
-      headerName: 'Edit',
-      colId: 'edit',
+      headerName: 'CRUD',
+      colId: 'crud',
       cellRenderer: 'crudRenderer',
       editable: false,
       minWidth: 250
@@ -119,17 +119,17 @@ function App() {
   }
 
   const onRowEditingStarted = params => {
-    let editRenderer = getEditRenderer(params.node);
-    editRenderer.startEditing();
+    let crudRenderer = getCrudRenderer(params.node);
+    crudRenderer.startEditing();
   }
 
   const onRowEditingStopped = params => {
-    let editRenderer = getEditRenderer(params.node);
-    editRenderer.stopEditing(false);
+    let crudRenderer = getCrudRenderer(params.node);
+    crudRenderer.stopEditing(false);
   }
 
-  const getEditRenderer = node => {
-    return gridApi.getCellRendererInstances({ rowNodes: [node], column: 'edit' })[0].componentInstance;
+  const getCrudRenderer = node => {
+    return gridApi.getCellRendererInstances({ rowNodes: [node], column: 'crud' })[0].componentInstance;
   }
 
   return (
