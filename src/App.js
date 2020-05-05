@@ -7,29 +7,59 @@ import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
 
 import SimpleEditor from './Components/SimpleEditor';
+import ValidationEditor from './Components/ValidationEditor';
+
+import { ALL_COUNTRIES, ALL_YEARS } from './lists.js';
+
+import CrudRenderer from './Components/CrudRenderer';
+import DropdownEditor from './Components/DropdownEditor';
 
 function App() {
-  const [columnDefs, setColumnDefs] = useState([
-    { headerName: 'Athelete (agTextCellEditor)', field: "athlete", cellEditor: 'agTextCellEditor' },
+  const columnDefs = [
+    { headerName: 'Athlete (agTextCellEditor)', field: "athlete", cellEditor: 'agTextCellEditor' },
     { headerName: "Age (simpleEditor)", field: "age", cellEditor: 'simpleEditor' },
-    { headerName: "Country", field: "country" },
-    { headerName: "Year", field: "year" },
-    { headerName: "Date", field: "date" },
-    { headerName: "Sport", field: "sport" },
-    { headerName: "Gold", field: "gold" },
-    { headerName: "Silver", field: "silver" },
-    { headerName: "Bronze", field: "bronze" },
-    { headerName: "Total", field: "total" }
-  ]);
+    {
+      headerName: "Country (validationEditor)",
+      field: "country",
+      cellEditor: 'validationEditor',
+      cellEditorParams: {
+        condition: (value) => ALL_COUNTRIES.includes(value)
+      }
+    },
+    {
+      headerName: "Year (Dropdown)",
+      field: "year",
+      minWidth: 200,
+      cellEditor: 'dropdownEditor',
+      cellEditorParams: {
+        values: ALL_YEARS
+      }
+    },
+    { headerName: "Date (Datepicker)", field: "date" },
+    { headerName: "Sport (Modal)", field: "sport" },
+    // { headerName: "Gold", field: "gold" },
+    // { headerName: "Silver", field: "silver" },
+    // { headerName: "Bronze", field: "bronze" },
+    // { headerName: "Total", field: "total" },
+    {
+      headerName: 'Edit',
+      colId: 'edit',
+      cellRenderer: 'crudRenderer',
+      editable: false,
+      minWidth: 200
+    }
+  ];
 
-  const [defaultColDef, setDefaultColDef] = useState({
+  const defaultColDef = {
     editable: true,
+  };
 
-  });
-
-  const [frameworkComponents, setFrameworkComponents] = useState({
-    simpleEditor: SimpleEditor
-  })
+  const frameworkComponents = {
+    simpleEditor: SimpleEditor,
+    validationEditor: ValidationEditor,
+    crudRenderer: CrudRenderer,
+    dropdownEditor: DropdownEditor
+  };
 
   const [rowData, setRowData] = useState(null);
   const [gridApi, setGridApi] = useState(null);
@@ -42,10 +72,25 @@ function App() {
     fetch("https://raw.githubusercontent.com/ag-grid/ag-grid/master/packages/ag-grid-docs/src/olympicWinnersSmall.json")
       .then(res => res.json())
       .then(data => {
-        setRowData(data);
+        setRowData(data.slice(0, 5));
       });
 
     params.columnApi.autoSizeAllColumns();
+    // params.api.sizeColumnsToFit();
+  }
+
+  const onRowEditingStarted = params => {
+    let editRenderer = getEditRenderer(params.node);
+    editRenderer.startEditing();
+  }
+
+  const onRowEditingStopped = params => {
+    let editRenderer = getEditRenderer(params.node);
+    editRenderer.stopEditing(false);
+  }
+
+  const getEditRenderer = node => {
+    return gridApi.getCellRendererInstances({ rowNodes: [node], column: 'edit' })[0].componentInstance;
   }
 
   return (
@@ -60,6 +105,10 @@ function App() {
           frameworkComponents={frameworkComponents}
           rowData={rowData}
           onGridReady={onGridReady}
+          editType="fullRow"
+          onRowEditingStarted={onRowEditingStarted}
+          onRowEditingStopped={onRowEditingStopped}
+        // singleClickEdit
         />
       </div>
     </div>
