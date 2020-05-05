@@ -8,7 +8,11 @@ import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
 import SimpleEditor from './Components/SimpleEditor';
 import ValidationEditor from './Components/ValidationEditor';
 
-import { ALL_COUNTRIES, ALL_YEARS } from './lists.js';
+import {
+  ALL_YEARS,
+  ALL_SPORTS,
+  ALL_COUNTRIES
+} from './lists.js';
 
 import CrudRenderer from './Components/CrudRenderer';
 import DropdownEditor from './Components/DropdownEditor';
@@ -17,15 +21,11 @@ import MyDatePicker from './Components/MyDatePicker';
 
 function App() {
   const columnDefs = [
-    { headerName: 'Athlete', field: "athlete", cellEditor: 'agTextCellEditor' },
+    { headerName: 'Athlete (Popup)', field: "athlete", cellEditor: 'agTextCellEditor' },
     // { headerName: "Age (simpleEditor)", field: "age", cellEditor: 'simpleEditor' },
     {
-      headerName: "Country (validationEditor)",
+      headerName: "Country (autoComplete)",
       field: "country",
-      cellEditor: 'validationEditor',
-      cellEditorParams: {
-        condition: (value) => ALL_COUNTRIES.includes(value)
-      }
     },
     {
       headerName: "Year (Dropdown)",
@@ -61,7 +61,15 @@ function App() {
         }
       },
     },
-    { headerName: "Sport (Modal)", field: "sport" },
+    {
+      headerName: "Sport (Validation)",
+      field: "sport",
+      cellEditor: 'validationEditor',
+      cellEditorParams: {
+        condition: (value) => ALL_SPORTS.includes(value)
+      }
+
+    },
     // { headerName: "Gold", field: "gold" },
     // { headerName: "Silver", field: "silver" },
     // { headerName: "Bronze", field: "bronze" },
