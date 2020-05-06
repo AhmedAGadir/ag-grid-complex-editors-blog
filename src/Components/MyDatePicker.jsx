@@ -6,8 +6,6 @@ import {
     KeyboardDatePicker,
 } from '@material-ui/pickers';
 
-import { startOfDay } from 'date-fns';
-
 export default class extends Component {
     constructor(props) {
         super(props);
@@ -15,6 +13,7 @@ export default class extends Component {
             selectedDate: null
         };
     }
+
 
     handleDateChange = updatedDate => {
         this.setDate(updatedDate)

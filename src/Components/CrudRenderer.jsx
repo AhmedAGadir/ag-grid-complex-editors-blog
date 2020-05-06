@@ -4,7 +4,8 @@ import Button from '@material-ui/core/Button';
 import { styled } from '@material-ui/core/styles';
 
 const MyButton = styled(Button)({
-    margin: '0 10px'
+    margin: '0 10px',
+    width: 80
 });
 
 export default class extends Component {
@@ -37,9 +38,11 @@ export default class extends Component {
 
     deleteRow = () => {
         let data = this.props.data;
-        this.props.api.updateRowData({ remove: [data] });
-        // weird bug if you don't redraw
-        this.props.api.redrawRows();
+        if (window.confirm(`are you sure you want to delete this row: ${JSON.stringify(data)})`)) {
+            this.props.api.updateRowData({ remove: [data] });
+            // weird bug if you don't redraw
+            this.props.api.redrawRows();
+        }
     }
 
     render() {
@@ -52,8 +55,8 @@ export default class extends Component {
 
         const stopEditingButtons = (
             <>
-                <MyButton color="primary" variant="outlined" onClick={() => this.stopEditing(false)}>Update</MyButton>
-                <MyButton color="primary" variant="outlined" onClick={() => this.stopEditing(true)}>Cancel</MyButton>
+                <MyButton color="primary" variant="contained" color="primary" onClick={() => this.stopEditing(false)}>Update</MyButton>
+                <MyButton color="primary" variant="contained" color="secondary" onClick={() => this.stopEditing(true)}>Cancel</MyButton>
             </>
         );
         return (

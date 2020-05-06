@@ -7,6 +7,7 @@ import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
 
 import SimpleEditor from './Components/SimpleEditor';
 import ValidationEditor from './Components/ValidationEditor';
+import DateEditor from './Components/DateEditor';
 
 import {
   ALL_YEARS,
@@ -18,26 +19,52 @@ import CrudRenderer from './Components/CrudRenderer';
 import DropdownEditor from './Components/DropdownEditor';
 
 import MyDatePicker from './Components/MyDatePicker';
+import AutoCompleteEditor from './Components/AutoCompleteEditor';
+
+import AsyncValidationEditor from './Components/AsyncValidationEditor';
+
+import { validNameRegex } from './utils';
 
 function App() {
   const columnDefs = [
-    { headerName: 'Athlete (Popup)', field: "athlete", cellEditor: 'agTextCellEditor' },
+    {
+      headerName: 'Athlete (simpleEditor)',
+      field: "athlete",
+      cellEditor: 'simpleEditor'
+      // cellEditor: 'asyncValidationEditor',
+      // cellEditorParams: {
+      //   condition: value => validNameRegex.test(value)
+      // }
+    },
+    {
+      headerName: "Sport (Validation)",
+      field: "sport",
+      cellEditor: 'asyncValidationEditor',
+      cellEditorParams: {
+        condition: (value) => ALL_SPORTS.includes(value)
+      }
+    },
     // { headerName: "Age (simpleEditor)", field: "age", cellEditor: 'simpleEditor' },
     {
       headerName: "Country (autoComplete)",
       field: "country",
-    },
-    {
-      headerName: "Year (Dropdown)",
-      field: "year",
-      cellEditor: 'dropdownEditor',
+      cellEditor: 'autoCompleteEditor',
       cellEditorParams: {
-        values: ALL_YEARS
+        options: ALL_COUNTRIES
       }
     },
+    // {
+    //   headerName: "Year (Dropdown)",
+    //   field: "year",
+    //   cellEditor: 'dropdownEditor',
+    //   cellEditorParams: {
+    //     values: ALL_YEARS
+    //   }
+    // },
     {
       headerName: "Date (Datepicker)",
       field: "date",
+      cellEditor: 'dateEditor',
       filter: 'agDateColumnFilter',
       filterParams: {
         suppressAndOrCondition: true,
@@ -61,15 +88,6 @@ function App() {
         }
       },
     },
-    {
-      headerName: "Sport (Validation)",
-      field: "sport",
-      cellEditor: 'validationEditor',
-      cellEditorParams: {
-        condition: (value) => ALL_SPORTS.includes(value)
-      }
-
-    },
     // { headerName: "Gold", field: "gold" },
     // { headerName: "Silver", field: "silver" },
     // { headerName: "Bronze", field: "bronze" },
@@ -79,6 +97,7 @@ function App() {
       colId: 'crud',
       cellRenderer: 'crudRenderer',
       editable: false,
+      filter: false,
       minWidth: 250
     }
   ];
@@ -93,7 +112,10 @@ function App() {
     validationEditor: ValidationEditor,
     crudRenderer: CrudRenderer,
     dropdownEditor: DropdownEditor,
-    agDateInput: MyDatePicker
+    agDateInput: MyDatePicker,
+    autoCompleteEditor: AutoCompleteEditor,
+    dateEditor: DateEditor,
+    asyncValidationEditor: AsyncValidationEditor
   };
 
 
@@ -109,13 +131,13 @@ function App() {
     fetch("https://raw.githubusercontent.com/ag-grid/ag-grid/master/packages/ag-grid-docs/src/olympicWinnersSmall.json")
       .then(res => res.json())
       .then(data => {
-        setRowData(data.slice(0, 100));
+        setRowData(data.slice(0, 50));
       });
 
     setTimeout(() => {
-      params.columnApi.autoSizeAllColumns();
+      // params.columnApi.autoSizeAllColumns();
     }, 500);
-    // params.api.sizeColumnsToFit();
+    params.api.sizeColumnsToFit();
   }
 
   const onRowEditingStarted = params => {
@@ -148,6 +170,7 @@ function App() {
           onRowEditingStarted={onRowEditingStarted}
           onRowEditingStopped={onRowEditingStopped}
           floatingFilter
+          suppressColumnVirtualisation
         // singleClickEdit
         />
       </div>

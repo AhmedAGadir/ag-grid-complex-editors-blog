@@ -26,10 +26,7 @@ export default class extends Component {
     }
 
     afterGuiAttached = () => {
-        this.setState({ value: this.props.value }, () => {
-            this.eRef.current.focus();
-            this.eRef.current.select();
-        });
+        this.setState({ value: this.props.value });
     }
 
     isCancelAfterEnd = () => {
@@ -48,12 +45,14 @@ export default class extends Component {
         }
 
         return (
-            <input
-                className={classList.join(' ')}
-                ref={this.eRef}
-                onChange={this.inputHandler}
-                value={this.state.value}
-            />
+            <div className="validation-container">
+                <input
+                    className={classList.join(' ')}
+                    ref={this.eRef}
+                    onChange={this.inputHandler}
+                    value={this.state.value}
+                />
+            </div>
         )
     }
 }

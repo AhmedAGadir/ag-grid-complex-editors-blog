@@ -1,0 +1,1 @@
+export const validNameRegex = /^[a-z\u00C0-\u02AB'´`-]+(\.?\s([a-z\u00C0-\u02AB'´`-]+\.?\s?)+)?$/i;
