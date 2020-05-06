@@ -27,7 +27,8 @@ export default class extends Component {
         this.state = {
             value: '',
             valid: true,
-            validating: false
+            validating: false,
+            touched: false
         };
 
         this.eRef = React.createRef();
@@ -35,6 +36,8 @@ export default class extends Component {
     }
 
     inputHandler = e => {
+        this.setState({ touched: true });
+
         let value = e.target.value;
 
         this.setState({ value, validating: true }, () => {
@@ -84,6 +87,10 @@ export default class extends Component {
                 txtColor = 'red';
                 validationSymbol = <span className="fail">✘</span>
             }
+        }
+
+        if (!this.state.touched) {
+            validationSymbol = null;
         }
 
         return (

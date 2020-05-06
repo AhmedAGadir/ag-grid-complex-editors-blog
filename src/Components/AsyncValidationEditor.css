@@ -35,7 +35,7 @@
     display: block;
     transform: translateY(-5px);
     -webkit-animation: ellipsis steps(4, end) 900ms infinite;
-    animation: ellipsis steps(4, end) 700ms infinite;
+    animation: ellipsis steps(4, end) 1000ms infinite;
     /* ascii code for the ellipsis character */
     content: "\2026";
     font-size: 30px;
