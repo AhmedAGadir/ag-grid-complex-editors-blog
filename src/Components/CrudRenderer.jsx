@@ -17,6 +17,20 @@ export default class extends Component {
         };
     }
 
+    componentDidMount() {
+        this.props.api.addEventListener('rowEditingStarted', params => {
+            if (this.props.node === params.node) {
+                this.startEditing();
+            }
+        });
+
+        this.props.api.addEventListener('rowEditingStopped', params => {
+            if (this.props.node === params.node) {
+                this.stopEditing();
+            }
+        });
+    }
+
     startEditing = () => {
         // only allow this to be invoked once
         if (!this.state.editing) {

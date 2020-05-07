@@ -19,7 +19,7 @@
 }
 
 .async-validation-container .success {
-    color: limegreen !important;
+    color: #3f51b5 !important;
 }
 
 .async-validation-container .loading {
@@ -27,7 +27,7 @@
 }
 
 .async-validation-container .fail {
-    color: red !important;
+    color: #f50057 !important;
 }
 
 .loading:after {

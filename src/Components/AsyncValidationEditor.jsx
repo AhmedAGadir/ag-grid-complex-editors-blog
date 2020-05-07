@@ -46,8 +46,8 @@ export default class extends Component {
     }
 
     asyncInputCheck = value => {
-        // random time between 500 and 1500ms
-        let timeout = Math.floor(Math.random() * 1000) + 500;
+        // random time between 0 and 1000ms
+        let timeout = Math.floor(Math.random() * 1000);
 
         new Promise((resolve, reject) => {
             setTimeout(() => {
@@ -67,42 +67,42 @@ export default class extends Component {
     }
 
     isCancelAfterEnd = () => {
-        let value = this.getValue();
-        let isValid = this.props.condition(value);
-        return !isValid
+        return !this.state.valid || this.state.validating;
     }
 
     render() {
-        let validationSymbol = null;
+        let loadingElement = null;
         let txtColor = null;
 
         if (this.state.validating) {
             txtColor = 'gray';
-            validationSymbol = <span className="loading"></span>
+            loadingElement = <span className="loading"></span>
         } else {
             if (this.state.valid) {
-                txtColor = 'black';
-                validationSymbol = <span className="success">✔</span>
+                txtColor = 'black'
+                loadingElement = <span className="success">✔</span>
             } else {
                 txtColor = 'red';
-                validationSymbol = <span className="fail">✘</span>
+                loadingElement = <span className="fail">✘</span>
             }
         }
 
         if (!this.state.touched) {
-            validationSymbol = null;
+            txtColor = 'black';
+            loadingElement = null;
         }
 
         return (
             <div className="async-validation-container">
                 <input
                     className="ag-input-field-input ag-text-field-input"
-                    style={{ height: 40, color: txtColor }}
+                    style={{ height: 40, color: txtColor, fontSize: 15 }}
                     ref={this.eRef}
                     onChange={this.inputHandler}
                     value={this.state.value}
+                    placeholder="Enter sport"
                 />
-                {validationSymbol}
+                {loadingElement}
             </div>
         )
     }

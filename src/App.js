@@ -9,6 +9,8 @@ import SimpleEditor from './Components/SimpleEditor';
 import ValidationEditor from './Components/ValidationEditor';
 import DateEditor from './Components/DateEditor';
 
+import './App.css'
+
 import {
   ALL_YEARS,
   ALL_SPORTS,
@@ -30,7 +32,7 @@ function App() {
     {
       headerName: 'Athlete (simpleEditor)',
       field: "athlete",
-      cellEditor: 'simpleEditor'
+      cellEditor: 'simpleEditor',
       // cellEditor: 'asyncValidationEditor',
       // cellEditorParams: {
       //   condition: value => validNameRegex.test(value)
@@ -98,13 +100,15 @@ function App() {
       cellRenderer: 'crudRenderer',
       editable: false,
       filter: false,
+      singleClickEdit: false,
       minWidth: 250
     }
   ];
 
   const defaultColDef = {
     editable: true,
-    filter: true
+    filter: true,
+    singleClickEdit: true,
   };
 
   const frameworkComponents = {
@@ -140,20 +144,6 @@ function App() {
     params.api.sizeColumnsToFit();
   }
 
-  const onRowEditingStarted = params => {
-    let crudRenderer = getCrudRenderer(params.node);
-    crudRenderer.startEditing();
-  }
-
-  const onRowEditingStopped = params => {
-    let crudRenderer = getCrudRenderer(params.node);
-    crudRenderer.stopEditing(false);
-  }
-
-  const getCrudRenderer = node => {
-    return gridApi.getCellRendererInstances({ rowNodes: [node], column: 'crud' })[0].componentInstance;
-  }
-
   return (
     <div style={{ width: "100%", height: "100vh" }}>
       <div
@@ -167,8 +157,8 @@ function App() {
           rowData={rowData}
           onGridReady={onGridReady}
           editType="fullRow"
-          onRowEditingStarted={onRowEditingStarted}
-          onRowEditingStopped={onRowEditingStopped}
+          // onRowEditingStarted={onRowEditingStarted}
+          // onRowEditingStopped={onRowEditingStopped}
           floatingFilter
           suppressColumnVirtualisation
         // singleClickEdit
