@@ -18,6 +18,13 @@ export default class extends Component {
         };
     }
 
+    componentWillMount() {
+        let editingCells = this.props.api.getEditingCells();
+        if (editingCells.length !== 0) {
+            // this.setState({ disabled: true });
+        }
+    }
+
     componentDidMount() {
         this.props.api.addEventListener('rowEditingStarted', this.onRowEditingStarted);
         this.props.api.addEventListener('rowEditingStopped', this.onRowEditingStopped);
@@ -30,7 +37,7 @@ export default class extends Component {
 
     onRowEditingStarted = params => {
         if (this.props.node === params.node) {
-            this.startEditing();
+            this.startEditing()
         } else {
             this.setState({ disabled: true });
         }
@@ -38,7 +45,11 @@ export default class extends Component {
 
     onRowEditingStopped = params => {
         if (this.props.node === params.node) {
-            this.stopEditing();
+            if (this.isEmptyRow(params.data)) {
+                this.deleteRow(true);
+            } else {
+                this.stopEditing();
+            }
         } else {
             this.setState({ disabled: false });
         }
@@ -63,10 +74,10 @@ export default class extends Component {
         }
     }
 
-    deleteRow = () => {
+    deleteRow = (force = false) => {
         let data = this.props.data;
-        if (window.confirm(`are you sure you want to delete this row: ${JSON.stringify(data)})`)) {
-            this.props.api.updateRowData({ remove: [data] });
+        if (force || window.confirm(`are you sure you want to delete this row: ${JSON.stringify(data)})`)) {
+            this.props.api.applyTransaction({ remove: [data] });
             // weird bug if you don't redraw
             this.props.api.redrawRows();
         }

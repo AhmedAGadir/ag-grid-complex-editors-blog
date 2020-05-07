@@ -9,6 +9,8 @@ import SimpleEditor from './Components/SimpleEditor';
 import ValidationEditor from './Components/ValidationEditor';
 import DateEditor from './Components/DateEditor';
 
+import AddRowStatusBar from './Components/AddRowStatusBar';
+
 import './App.css'
 
 import {
@@ -47,10 +49,6 @@ function App() {
       cellEditorParams: {
         options: ALL_COUNTRIES
       },
-      suppressKeyboardEvent: params => {
-        (console.log('suppressing'))
-        return params.editing;
-      }
     },
     // {
     //   headerName: "Year",
@@ -102,6 +100,7 @@ function App() {
     editable: true,
     filter: true,
     singleClickEdit: true,
+    suppressKeyboardEvent: params => params.editing,
   };
 
   const frameworkComponents = {
@@ -111,10 +110,15 @@ function App() {
     agDateInput: MyDatePicker,
     autoCompleteEditor: AutoCompleteEditor,
     dateEditor: DateEditor,
-    asyncValidationEditor: AsyncValidationEditor
+    asyncValidationEditor: AsyncValidationEditor,
+    addRowStatusBar: AddRowStatusBar
   };
 
-
+  const statusBar = {
+    statusPanels: [
+      { statusPanel: 'addRowStatusBar' }
+    ]
+  }
 
   const [rowData, setRowData] = useState(null);
   const [gridApi, setGridApi] = useState(null);
@@ -127,17 +131,14 @@ function App() {
     fetch("https://raw.githubusercontent.com/ag-grid/ag-grid/master/packages/ag-grid-docs/src/olympicWinnersSmall.json")
       .then(res => res.json())
       .then(data => {
-        setRowData(data.slice(0, 50));
+        setRowData(data.slice(100, 200));
       });
 
-    setTimeout(() => {
-      // params.columnApi.autoSizeAllColumns();
-    }, 500);
     params.api.sizeColumnsToFit();
   }
 
   return (
-    <div style={{ width: "100%", height: "100vh" }}>
+    <div className="my-app">
       <div
         id="myGrid"
         style={{ height: "100%", width: "100%" }}
@@ -153,7 +154,10 @@ function App() {
           // onRowEditingStopped={onRowEditingStopped}
           floatingFilter
           suppressColumnVirtualisation
-        // singleClickEdit
+          singleClickEdit
+          // suppressClickEdit
+          statusBar={statusBar}
+
         />
       </div>
     </div>

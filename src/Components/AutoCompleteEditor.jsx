@@ -7,7 +7,7 @@ export default class extends Component {
         super(props);
         this.state = {
             value: this.props.value,
-            inputValue: this.props.inputValue
+            inputValue: ''
         };
     }
 
@@ -24,7 +24,6 @@ export default class extends Component {
     }
 
     render() {
-
         return (
             <Autocomplete
                 style={{ padding: '0 10px' }}

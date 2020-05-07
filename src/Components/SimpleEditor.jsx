@@ -19,8 +19,8 @@ export default class extends Component {
 
     afterGuiAttached = () => {
         this.setState({ value: this.props.value }, () => {
-            // this.eRef.current.focus();
-            // this.eRef.current.select();
+            this.eRef.current.focus();
+            this.eRef.current.select();
         });
     }
 

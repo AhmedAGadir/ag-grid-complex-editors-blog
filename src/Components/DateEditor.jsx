@@ -20,16 +20,26 @@ export default class extends Component {
     }
 
     handleDateChange = d => {
-        d.setHours(0, 0, 0, 0);
+        console.log('date', d)
+        if (d) {
+            d.setHours(0, 0, 0, 0);
+        }
         this.setState({ selectedDate: d });
     }
 
     getValue = () => {
-        let dateString = format(this.state.selectedDate, 'dd/MM/yyyy');
+        let selectedState = this.state.selectedDate;
+        let dateString = null;
+        if (selectedState) {
+            dateString = format(selectedState, 'dd/MM/yyyy');
+        }
         return dateString;
     }
 
     afterGuiAttached = () => {
+        if (!this.props.value) {
+            return;
+        }
         const [match, day, month, year] = this.props.value.match(/(\d{2})\/(\d{2})\/(\d{4})/);
         let selectedDate = new Date(year, month - 1, day);
         this.setState({ selectedDate });
@@ -37,11 +47,9 @@ export default class extends Component {
 
     render() {
         return (
-            <MuiPickersUtilsProvider
-                utils={DateFnsUtils}
-                style={{}}>
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <KeyboardDatePicker
-                    style={{ margin: 0, padding: '6px 10px', }}
+                    style={{ width: '100%', margin: 0, padding: '6px 10px', }}
                     margin="normal"
                     id="date-picker-dialog"
                     format="dd/MM/yyyy"
