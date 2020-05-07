@@ -39,9 +39,9 @@ export default class extends Component {
         return (
             <MuiPickersUtilsProvider
                 utils={DateFnsUtils}
-                style={{ background: 'green', margin: 0, width: '100%' }}>
+                style={{}}>
                 <KeyboardDatePicker
-                    style={{ width: '100%', margin: 0, padding: '6px 5px', }}
+                    style={{ margin: 0, padding: '6px 10px', }}
                     margin="normal"
                     id="date-picker-dialog"
                     format="dd/MM/yyyy"

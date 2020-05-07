@@ -13,22 +13,35 @@ export default class extends Component {
         super(props);
 
         this.state = {
-            editing: false
+            editing: false,
+            disabled: false
         };
     }
 
     componentDidMount() {
-        this.props.api.addEventListener('rowEditingStarted', params => {
-            if (this.props.node === params.node) {
-                this.startEditing();
-            }
-        });
+        this.props.api.addEventListener('rowEditingStarted', this.onRowEditingStarted);
+        this.props.api.addEventListener('rowEditingStopped', this.onRowEditingStopped);
+    }
 
-        this.props.api.addEventListener('rowEditingStopped', params => {
-            if (this.props.node === params.node) {
-                this.stopEditing();
-            }
-        });
+    destroy() {
+        this.props.api.removeEventListener('rowEditingStarted', this.onRowEditingStarted);
+        this.props.api.removeEventListener('rowEditingStopped', this.onRowEditingStopped);
+    }
+
+    onRowEditingStarted = params => {
+        if (this.props.node === params.node) {
+            this.startEditing();
+        } else {
+            this.setState({ disabled: true });
+        }
+    }
+
+    onRowEditingStopped = params => {
+        if (this.props.node === params.node) {
+            this.stopEditing();
+        } else {
+            this.setState({ disabled: false });
+        }
     }
 
     startEditing = () => {
@@ -62,15 +75,31 @@ export default class extends Component {
     render() {
         const startEditingButtons = (
             <>
-                <MyButton color="primary" variant="outlined" onClick={this.startEditing}>Edit</MyButton>
-                <MyButton color="primary" variant="outlined" onClick={this.deleteRow}>Delete</MyButton>
+                <MyButton
+                    color="primary"
+                    variant="outlined"
+                    onClick={this.startEditing}
+                    disabled={this.state.disabled}>Edit</MyButton>
+                <MyButton
+                    color="primary"
+                    variant="outlined"
+                    onClick={this.deleteRow}
+                    disabled={this.state.disabled}>Delete</MyButton>
             </>
         );
 
         const stopEditingButtons = (
             <>
-                <MyButton color="primary" variant="contained" color="primary" onClick={() => this.stopEditing(false)}>Update</MyButton>
-                <MyButton color="primary" variant="contained" color="secondary" onClick={() => this.stopEditing(true)}>Cancel</MyButton>
+                <MyButton
+                    color="primary"
+                    variant="contained"
+                    onClick={() => this.stopEditing(false)}
+                    disabled={this.state.disabled}>Update</MyButton>
+                <MyButton
+                    color="secondary"
+                    variant="contained"
+                    onClick={() => this.stopEditing(true)}
+                    disabled={this.state.disabled}>Cancel</MyButton>
             </>
         );
         return (

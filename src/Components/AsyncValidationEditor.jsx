@@ -96,11 +96,11 @@ export default class extends Component {
             <div className="async-validation-container">
                 <input
                     className="ag-input-field-input ag-text-field-input"
-                    style={{ height: 40, color: txtColor, fontSize: 15 }}
+                    style={{ height: 40, color: txtColor, fontSize: '1rem' }}
                     ref={this.eRef}
                     onChange={this.inputHandler}
                     value={this.state.value}
-                    placeholder="Enter sport"
+                    placeholder="Enter Sport"
                 />
                 {loadingElement}
             </div>

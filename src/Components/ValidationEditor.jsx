@@ -48,6 +48,7 @@ export default class extends Component {
             <div className="validation-container">
                 <input
                     className={classList.join(' ')}
+                    style={{ fontSize: 15 }}
                     ref={this.eRef}
                     onChange={this.inputHandler}
                     value={this.state.value}

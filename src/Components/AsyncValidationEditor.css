@@ -1,11 +1,5 @@
 .async-validation-container {
-    /* background: green; */
     position: relative;
-}
-
-.async-validation-container>input {
-    /* width: 100%; */
-    height: 100%;
 }
 
 .async-validation-container>span {
@@ -19,7 +13,7 @@
 }
 
 .async-validation-container .success {
-    color: #3f51b5 !important;
+    color: #3f51b5;
 }
 
 .async-validation-container .loading {
@@ -27,14 +21,14 @@
 }
 
 .async-validation-container .fail {
-    color: #f50057 !important;
+    color: #f50057;
 }
 
 .loading:after {
     overflow: hidden;
     display: block;
     transform: translateY(-5px);
-    -webkit-animation: ellipsis steps(4, end) 900ms infinite;
+    -webkit-animation: ellipsis steps(4, end) 1000ms infinite;
     animation: ellipsis steps(4, end) 1000ms infinite;
     /* ascii code for the ellipsis character */
     content: "\2026";

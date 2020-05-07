@@ -12,20 +12,17 @@ import DateEditor from './Components/DateEditor';
 import './App.css'
 
 import {
-  ALL_YEARS,
   ALL_SPORTS,
   ALL_COUNTRIES
 } from './lists.js';
 
 import CrudRenderer from './Components/CrudRenderer';
-import DropdownEditor from './Components/DropdownEditor';
 
 import MyDatePicker from './Components/MyDatePicker';
 import AutoCompleteEditor from './Components/AutoCompleteEditor';
 
 import AsyncValidationEditor from './Components/AsyncValidationEditor';
 
-import { validNameRegex } from './utils';
 
 function App() {
   const columnDefs = [
@@ -33,10 +30,6 @@ function App() {
       headerName: 'Athlete (simpleEditor)',
       field: "athlete",
       cellEditor: 'simpleEditor',
-      // cellEditor: 'asyncValidationEditor',
-      // cellEditorParams: {
-      //   condition: value => validNameRegex.test(value)
-      // }
     },
     {
       headerName: "Sport (Validation)",
@@ -53,15 +46,15 @@ function App() {
       cellEditor: 'autoCompleteEditor',
       cellEditorParams: {
         options: ALL_COUNTRIES
+      },
+      suppressKeyboardEvent: params => {
+        (console.log('suppressing'))
+        return params.editing;
       }
     },
     // {
-    //   headerName: "Year (Dropdown)",
+    //   headerName: "Year",
     //   field: "year",
-    //   cellEditor: 'dropdownEditor',
-    //   cellEditorParams: {
-    //     values: ALL_YEARS
-    //   }
     // },
     {
       headerName: "Date (Datepicker)",
@@ -115,7 +108,6 @@ function App() {
     simpleEditor: SimpleEditor,
     validationEditor: ValidationEditor,
     crudRenderer: CrudRenderer,
-    dropdownEditor: DropdownEditor,
     agDateInput: MyDatePicker,
     autoCompleteEditor: AutoCompleteEditor,
     dateEditor: DateEditor,

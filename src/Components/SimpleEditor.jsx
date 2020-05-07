@@ -28,7 +28,7 @@ export default class extends Component {
         return (
             <input
                 className="ag-input-field-input ag-text-field-input"
-                style={{ height: 40 }}
+                style={{ height: 40, fontSize: '1rem' }}
                 ref={this.eRef}
                 onChange={this.inputHandler}
                 value={this.state.value}
