@@ -83,6 +83,8 @@ export default class extends Component {
         }
     }
 
+    isEmptyRow = (data)
+
     render() {
         const startEditingButtons = (
             <>
