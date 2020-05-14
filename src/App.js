@@ -78,13 +78,15 @@ class App extends Component {
           cellRenderer: 'actionsRenderer',
           editable: false,
           filter: false,
-          minWidth: 200
+          minWidth: 220,
+          // singleClickEdit: false,
         }
       ],
       defaultColDef: {
         editable: true,
         filter: true,
         suppressKeyboardEvent: params => params.editing,
+        // singleClickEdit: true,
       },
       frameworkComponents: {
         simpleEditor: SimpleEditor,
@@ -112,7 +114,7 @@ class App extends Component {
       .then(res => res.json())
       .then(data => {
         data.forEach(row => row.id = uuid());
-        this.setState({ rowData: data.slice(100, 120) });
+        this.setState({ rowData: data.slice(100, 200) });
       });
 
     params.api.sizeColumnsToFit();
@@ -135,6 +137,7 @@ class App extends Component {
             editType="fullRow"
             floatingFilter
             statusBar={this.state.statusBar}
+            suppressClickEdit
           />
         </div>
       </div>

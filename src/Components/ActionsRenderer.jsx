@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 // import React, { useState, useEffect } from 'react';
-import Button from '@material-ui/core/Button';
+// import Button from '@material-ui/core/Button';
 
-import { styled } from '@material-ui/core/styles';
+import './ActionsRenderer.css';
 
-const MyButton = styled(Button)({
-    margin: '0 10px',
-    width: 80
-});
+
+// import { styled } from '@material-ui/core/styles';
+
+// const MyButton = styled(Button)({
+//     margin: '0 10px',
+//     width: 80
+// });
 
 // export default (props) => {
 //     let [editing, setEditing] = useState(false);
@@ -121,6 +124,11 @@ export default class extends Component {
         };
     }
 
+    refresh() {
+        console.log('refresh')
+        return false;
+    }
+
     componentDidMount() {
         let editingCells = this.props.api.getEditingCells();
         if (editingCells.length !== 0) {
@@ -138,7 +146,7 @@ export default class extends Component {
 
     onRowEditingStarted = params => {
         if (this.props.node === params.node) {
-            this.startEditing()
+            this.setState({ editing: true });
         } else {
             this.setState({ disabled: true });
         }
@@ -149,7 +157,7 @@ export default class extends Component {
             if (this.isEmptyRow(params.data)) {
                 this.deleteRow(true);
             } else {
-                this.stopEditing();
+                this.setState({ editing: false });
             }
         } else {
             this.setState({ disabled: false });
@@ -157,20 +165,14 @@ export default class extends Component {
     }
 
     startEditing = () => {
-        if (!this.state.editing) {
-            this.props.api.startEditingCell({
-                rowIndex: this.props.rowIndex,
-                colKey: this.props.column.colId
-            });
-            this.setState({ editing: true });
-        }
+        this.props.api.startEditingCell({
+            rowIndex: this.props.rowIndex,
+            colKey: this.props.column.colId
+        });
     }
 
     stopEditing = (bool) => {
-        if (this.state.editing) {
-            this.props.api.stopEditing(bool);
-            this.setState({ editing: false });
-        }
+        this.props.api.stopEditing(bool);
     }
 
     deleteRow = (force = false) => {
@@ -194,35 +196,27 @@ export default class extends Component {
     render() {
         const startEditingButtons = (
             <>
-                <MyButton
-                    color="primary"
-                    variant="outlined"
+                <button
                     onClick={this.startEditing}
-                    disabled={this.state.disabled}>Edit</MyButton>
-                <MyButton
-                    color="primary"
-                    variant="outlined"
+                    disabled={this.state.disabled}>Edit</button>
+                <button
                     onClick={() => this.deleteRow()}
-                    disabled={this.state.disabled}>Delete</MyButton>
+                    disabled={this.state.disabled}>Delete</button>
             </>
         );
 
         const stopEditingButtons = (
             <>
-                <MyButton
-                    color="primary"
-                    variant="contained"
+                <button
                     onClick={() => this.stopEditing(false)}
-                    disabled={this.state.disabled}>Update</MyButton>
-                <MyButton
-                    color="secondary"
-                    variant="contained"
+                    disabled={this.state.disabled}>Update</button>
+                <button
                     onClick={() => this.stopEditing(true)}
-                    disabled={this.state.disabled}>Cancel</MyButton>
+                    disabled={this.state.disabled}>Cancel</button>
             </>
         );
         return (
-            <div>
+            <div className="actions-btn-container">
                 {this.state.editing ? stopEditingButtons : startEditingButtons}
             </div>
         )

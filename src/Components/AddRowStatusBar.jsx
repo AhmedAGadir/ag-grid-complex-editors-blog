@@ -1,19 +1,7 @@
 import React, { Component } from 'react';
-
-import Button from '@material-ui/core/Button';
-import { styled } from '@material-ui/core/styles';
-
 import { uuid } from 'uuidv4';
 
-const MyButton = styled(Button)({
-    color: 'white',
-    borderColor: 'white',
-    margin: 12,
-    '&:disabled': {
-        color: 'grey',
-        borderColor: 'grey',
-    }
-});
+import './AddRowStatusBar.css'
 
 export default class extends Component {
     constructor(props) {
@@ -21,6 +9,7 @@ export default class extends Component {
         this.state = {
             editing: false
         };
+        this.id = null;
     }
 
 
@@ -40,24 +29,22 @@ export default class extends Component {
         this.props.api.updateRowData({ add: [blankRow] });
 
 
-        setTimeout(() => {
-            let node = this.props.api.getRowNode(this.id);
-            this.props.api.ensureIndexVisible(node.rowIndex);
-            this.props.api.dispatchEvent({
-                type: 'rowEditingStarted',
-                node: node,
-            });
-        }, 500);
+        // setTimeout(() => {
+        let node = this.props.api.getRowNode(this.id);
+        this.props.api.ensureIndexVisible(node.rowIndex);
+        this.props.api.dispatchEvent({
+            type: 'rowEditingStarted',
+            node: node,
+        });
+        // }, 500);
     }
 
     render() {
         return (
-            <div>
-                <MyButton
-                    color="primary"
-                    variant="outlined"
-                    disabled={this.state.editing}
-                    onClick={this.addRow}>Add Row</MyButton>
+            <div className="status-btn-container">
+                <button
+                    onClick={this.addRow}
+                    disabled={this.state.editing}>Add Row</button>
             </div>
         );
     }

@@ -4,7 +4,7 @@
 }
 
 .ag-status-bar {
-  background: #3f51b5;
+  background: #007bff;
   height: 60px;
 }
 
@@ -16,4 +16,33 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+button {
+  /* background-color: #007bff; */
+  border: none;
+  color: white;
+  padding: 5px;
+  width: 80px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  transition-duration: 0.4s;
+  cursor: pointer;
+  background-color: inherit;
+  color: black;
+  border: 2px solid black;
+}
+
+button:hover {
+  background-color: black;
+  color: white;
+}
+
+button:disabled {
+  color: lightgrey;
+  border-color: lightgrey;
+  background: whitesmoke;
 }
