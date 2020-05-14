@@ -27,6 +27,7 @@ export default class extends Component {
     render() {
         return (
             <input
+                type="text"
                 className="ag-input-field-input ag-text-field-input"
                 style={{ height: 40, fontSize: '1rem' }}
                 ref={this.eRef}

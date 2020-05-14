@@ -1,8 +1,0 @@
-.validation-container>.success {
-    background-color: limegreen !important;
-}
-
-.validation-container>.fail {
-    background-color: red !important;
-    color: white !important;
-}
