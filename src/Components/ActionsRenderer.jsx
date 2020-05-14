@@ -156,10 +156,6 @@ export default class extends Component {
         }
     }
 
-    isEmptyRow = (data) => {
-        return !Object.values(data).some(value => value);
-    }
-
     startEditing = () => {
         if (!this.state.editing) {
             this.props.api.startEditingCell({
@@ -185,9 +181,14 @@ export default class extends Component {
         }
         if (confirm) {
             this.props.api.updateRowData({ remove: [data] });
-            // weird bug if you don't redraw
-            this.props.api.redrawRows();
+            this.props.api.refreshCells({ force: true });
         }
+    }
+
+    isEmptyRow = (data) => {
+        let dataCopy = { ...data };
+        delete dataCopy.id;
+        return !Object.values(dataCopy).some(value => value);
     }
 
     render() {

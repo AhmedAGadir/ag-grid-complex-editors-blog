@@ -14,10 +14,9 @@ import DateEditor from './Components/DateEditor';
 import ActionsRenderer from './Components/ActionsRenderer';
 import AddRowStatusBar from './Components/AddRowStatusBar';
 
-import {
-  ALL_SPORTS,
-  ALL_COUNTRIES
-} from './lists.js';
+import { ALL_SPORTS, ALL_COUNTRIES } from './lists.js';
+
+import { uuid } from 'uuidv4';
 
 class App extends Component {
 
@@ -112,6 +111,7 @@ class App extends Component {
     fetch("https://raw.githubusercontent.com/ag-grid/ag-grid/master/packages/ag-grid-docs/src/olympicWinnersSmall.json")
       .then(res => res.json())
       .then(data => {
+        data.forEach(row => row.id = uuid());
         this.setState({ rowData: data.slice(100, 120) });
       });
 
@@ -130,11 +130,11 @@ class App extends Component {
             defaultColDef={this.state.defaultColDef}
             frameworkComponents={this.state.frameworkComponents}
             rowData={this.state.rowData}
+            getRowNodeId={data => data.id}
             onGridReady={this.onGridReady}
             editType="fullRow"
             floatingFilter
             statusBar={this.state.statusBar}
-
           />
         </div>
       </div>
