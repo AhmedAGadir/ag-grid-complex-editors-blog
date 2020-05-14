@@ -124,17 +124,14 @@ export default class extends Component {
         };
     }
 
-    refresh() {
-        console.log('refresh')
-        return false;
-    }
-
-    componentDidMount() {
+    componentWillMount() {
         let editingCells = this.props.api.getEditingCells();
         if (editingCells.length !== 0) {
             this.setState({ disabled: true });
         }
+    }
 
+    componentDidMount() {
         this.props.api.addEventListener('rowEditingStarted', this.onRowEditingStarted);
         this.props.api.addEventListener('rowEditingStopped', this.onRowEditingStopped);
     }
@@ -197,9 +194,13 @@ export default class extends Component {
         const startEditingButtons = (
             <>
                 <button
+                    variant="outlined"
+                    color="primary"
                     onClick={this.startEditing}
                     disabled={this.state.disabled}>Edit</button>
                 <button
+                    variant="outlined"
+                    color="secondary"
                     onClick={() => this.deleteRow()}
                     disabled={this.state.disabled}>Delete</button>
             </>
@@ -208,9 +209,13 @@ export default class extends Component {
         const stopEditingButtons = (
             <>
                 <button
+                    variant="contained"
+                    color="primary"
                     onClick={() => this.stopEditing(false)}
                     disabled={this.state.disabled}>Update</button>
                 <button
+                    variant="contained"
+                    color="secondary"
                     onClick={() => this.stopEditing(true)}
                     disabled={this.state.disabled}>Cancel</button>
             </>

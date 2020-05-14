@@ -43,6 +43,8 @@ export default class extends Component {
         return (
             <div className="status-btn-container">
                 <button
+                    variant="contained"
+                    color="secondary"
                     onClick={this.addRow}
                     disabled={this.state.editing}>Add Row</button>
             </div>
