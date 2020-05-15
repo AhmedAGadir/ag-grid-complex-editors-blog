@@ -24,6 +24,10 @@ export default class extends Component {
         });
     }
 
+    isCancelAfterEnd = () => {
+        return !this.state.value;
+    }
+
     render() {
         return (
             <input
@@ -33,6 +37,7 @@ export default class extends Component {
                 ref={this.eRef}
                 onChange={this.inputHandler}
                 value={this.state.value}
+                placeholder='Enter Athlete'
             />
         )
     }

@@ -172,7 +172,7 @@ export default class extends Component {
                 txtColor = 'black'
                 loadingElement = <span className="success">✔</span>
             } else {
-                txtColor = 'red';
+                txtColor = '#E91E63';
                 loadingElement = <span className="fail">✘</span>
             }
         }

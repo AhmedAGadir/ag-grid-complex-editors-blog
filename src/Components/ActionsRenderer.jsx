@@ -126,7 +126,7 @@ export default class extends Component {
 
     componentWillMount() {
         let editingCells = this.props.api.getEditingCells();
-        if (editingCells.length !== 0) {
+        if (editingCells.length !== 0 && editingCells[0].rowIndex !== this.props.node.rowIndex) {
             this.setState({ disabled: true });
         }
     }

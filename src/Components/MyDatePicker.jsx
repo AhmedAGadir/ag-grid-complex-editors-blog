@@ -24,11 +24,10 @@ export default class extends Component {
     }
 
     setDate = d => {
-        if (!d) {
-            return;
+        if (d) {
+            // set time to midnight
+            d.setHours(0, 0, 0, 0);
         }
-        // set time to midnight
-        d.setHours(0, 0, 0, 0);
         this.setState({ selectedDate: d }, this.props.onDateChanged);
     }
 

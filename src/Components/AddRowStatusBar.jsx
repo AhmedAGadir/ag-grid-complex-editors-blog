@@ -27,24 +27,23 @@ export default class extends Component {
         this.id = uuid();
         let blankRow = { id: this.id };
         this.props.api.updateRowData({ add: [blankRow] });
-
-
-        // setTimeout(() => {
         let node = this.props.api.getRowNode(this.id);
         this.props.api.ensureIndexVisible(node.rowIndex);
-        this.props.api.dispatchEvent({
-            type: 'rowEditingStarted',
-            node: node,
-        });
-        // }, 500);
+
+        setTimeout(() => {
+            this.props.api.startEditingCell({
+                rowIndex: node.rowIndex,
+                colKey: 'athlete'
+            });
+        }, 300);
     }
 
     render() {
         return (
-            <div className="status-btn-container">
+            <div className="add-btn-container">
                 <button
-                    variant="contained"
-                    color="secondary"
+                    variant={this.state.editing ? 'outlined' : 'contained'}
+                    color="primary"
                     onClick={this.addRow}
                     disabled={this.state.editing}>Add Row</button>
             </div>

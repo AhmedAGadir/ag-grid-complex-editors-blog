@@ -36,6 +36,10 @@ export default class extends Component {
         return dateString;
     }
 
+    isCancelAfterEnd = () => {
+        return !this.state.selectedDate;
+    }
+
     afterGuiAttached = () => {
         if (!this.props.value) {
             return;
@@ -57,6 +61,7 @@ export default class extends Component {
                     onChange={this.handleDateChange}
                     variant="inline"
                     disableToolbar
+                    placeholder="Enter Date"
                 />
             </MuiPickersUtilsProvider>
         )

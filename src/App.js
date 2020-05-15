@@ -51,6 +51,7 @@ class App extends Component {
           cellEditor: 'dateEditor',
           filter: 'agDateColumnFilter',
           filterParams: {
+            clearButton: true,
             suppressAndOrCondition: true,
             comparator: function (filterLocalDateAtMidnight, cellValue) {
               var dateAsString = cellValue;

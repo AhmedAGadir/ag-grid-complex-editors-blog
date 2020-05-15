@@ -1,13 +1,3 @@
-export const ALL_YEARS = [
-    2000,
-    2002,
-    2004,
-    2006,
-    2008,
-    2010,
-    2012
-]
-
 export const ALL_SPORTS = [
     "Swimming",
     "Gymnastics",
