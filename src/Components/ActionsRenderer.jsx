@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import './ActionsRenderer.css';
-
 
 export default (props) => {
     let [editing, setEditing] = useState(false);

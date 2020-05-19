@@ -1,200 +1,186 @@
-import React, { Component } from 'react';
-// import React, { useState, useEffect, forwardRef, useImperativeHandle, useRef } from "react";
+import React, { useState, useEffect, forwardRef, useImperativeHandle, useRef } from "react";
 import './AsyncValidationEditor.css';
-import { debounce } from '../utils';
+import { debounce, useDebounce } from '../utils';
+
+export default forwardRef((props, ref) => {
+    const [inputValue, setInputValue] = useState('');
+    const [valid, setValid] = useState(true);
+    const [validating, setValidating] = useState(false);
+    const [touched, setTouched] = useState(false);
+
+    const debouncedInputVal = useDebounce(inputValue, 1000);
+
+    const inputHandler = e => {
+        let value = e.target.value;
+        setTouched(true);
+        setInputValue(value);
+        setValidating(true);
+    }
+
+    useEffect(() => {
+        // random time between 0 and 1000ms
+        let timeout = Math.floor(Math.random() * 1000);
+
+        new Promise((resolve, reject) => {
+            if (inputValue === '') {
+                resolve(false);
+            } else {
+                setTimeout(() => {
+                    resolve(props.condition(inputValue));
+                }, timeout);
+            }
+        })
+            .then(valid => {
+                setValid(valid);
+                setValidating(false)
+            })
+            .catch(err => console.log(err));
+    }, [debouncedInputVal]);
+
+    useImperativeHandle(ref, () => {
+        return {
+            getValue: () => {
+                return inputValue;
+            },
+            afterGuiAttached: () => {
+                setInputValue(props.value);
+            },
+            isCancelAfterEnd: () => {
+                return !valid || validating;
+            },
+        };
+    });
+
+    let loadingElement = null;
+    let txtColor = null;
+
+    if (validating) {
+        txtColor = 'gray';
+        loadingElement = <span className="loading"></span>
+    } else {
+        if (valid) {
+            txtColor = 'black'
+            loadingElement = <span className="success">✔</span>
+        } else {
+            txtColor = '#E91E63';
+            loadingElement = <span className="fail">✘</span>
+        }
+    }
+
+    if (!touched) {
+        txtColor = 'black';
+        loadingElement = null;
+    }
+
+    return (
+        <div className="async-validation-container">
+            <input
+                className="ag-input-field-input ag-text-field-input"
+                style={{ height: 40, color: txtColor, fontSize: '1rem' }}
+                onChange={inputHandler}
+                value={inputValue}
+                placeholder="Enter Sport"
+            />
+            {loadingElement}
+        </div>
+    )
+})
 
 
-// export default forwardRef((props, ref) => {
 
-//     const [value, setValue] = useState('');
-//     const [valid, setValid] = useState(true);
-//     const [validating, setValidating] = useState(false);
-//     const [touched, setTouched] = useState(false);
+// import React, { Component } from 'react';
+// import './AsyncValidationEditor.css';
+// import { debounce } from '../utils';
 
-//     const inputRef = useRef();
+// export default class extends Component {
+//     constructor(props) {
+//         super(props);
 
+//         this.state = {
+//             value: '',
+//             valid: true,
+//             validating: false,
+//             touched: false
+//         };
 
-//     const inputHandler = e => {
-//         setTouched(true);
+//         this.eRef = React.createRef();
+//         this.debouncedAsyncInputCheck = debounce(this.asyncInputCheck, 1000);
+//     }
+
+//     inputHandler = e => {
+//         this.setState({ touched: true });
 
 //         let value = e.target.value;
 
-//         setValue(value);
-//         setValidating(true)
+//         this.setState({ value, validating: true }, () => {
+//             this.debouncedAsyncInputCheck(value)
+//         });
 //     }
 
-//     let debouncedAsyncInputCheck;
-
-//     useEffect(() => {
-//         debouncedAsyncInputCheck = debounce(asyncInputCheck, 1000);
-//     }, []);
-
-//     const asyncInputCheck = value => {
-//         // random time between 500 and 1500ms
-//         let timeout = Math.floor(Math.random() * 1000) + 500;
+//     asyncInputCheck = value => {
+//         // random time between 0 and 1000ms
+//         let timeout = Math.floor(Math.random() * 1000);
 
 //         new Promise((resolve, reject) => {
 //             if (value === '') {
 //                 resolve(false);
 //             } else {
 //                 setTimeout(() => {
-//                     resolve(props.condition(value));
+//                     resolve(this.props.condition(value));
 //                 }, timeout);
 //             }
 //         })
-//             .then(valid => {
-//                 console.log('setting valid, validating')
-//                 setValid(valid);
-//                 setValidating(false);
-//             })
+//             .then(valid => this.setState({ valid, validating: false }))
 //             .catch(err => console.log(err));
 //     }
 
-//     useEffect(() => {
-//         if (debouncedAsyncInputCheck) {
-//             debouncedAsyncInputCheck(value)
-//         }
-//     }, [value]);
+//     getValue = () => {
+//         return this.state.value;
+//     }
 
-//     useImperativeHandle(ref, () => {
-//         return {
-//             getValue() {
-//                 return value;
-//             },
-//             afterGuiAttached() {
-//                 setValue(props.value);
-//             },
-//             isCancelAfterEnd() {
-//                 return !valid || validating;
-//             }
-//         };
-//     });
+//     afterGuiAttached = () => {
+//         this.setState({ value: this.props.value });
+//     }
 
-//     let loadingElement = null;
-//     let txtColor = null;
+//     isCancelAfterEnd = () => {
+//         return !this.state.valid || this.state.validating;
+//     }
 
-//     if (validating) {
-//         txtColor = 'gray';
-//         loadingElement = <span className="loading"></span>
-//     } else {
-//         if (valid) {
-//             txtColor = 'black'
-//             loadingElement = <span className="success">✔</span>
+//     render() {
+//         let loadingElement = null;
+//         let txtColor = null;
+
+//         if (this.state.validating) {
+//             txtColor = 'gray';
+//             loadingElement = <span className="loading"></span>
 //         } else {
-//             txtColor = 'red';
-//             loadingElement = <span className="fail">✘</span>
+//             if (this.state.valid) {
+//                 txtColor = 'black'
+//                 loadingElement = <span className="success">✔</span>
+//             } else {
+//                 txtColor = '#E91E63';
+//                 loadingElement = <span className="fail">✘</span>
+//             }
 //         }
+
+//         if (!this.state.touched) {
+//             txtColor = 'black';
+//             loadingElement = null;
+//         }
+
+//         return (
+//             <div className="async-validation-container">
+//                 <input
+//                     className="ag-input-field-input ag-text-field-input"
+//                     style={{ height: 40, color: txtColor, fontSize: '1rem' }}
+//                     ref={this.eRef}
+//                     onChange={this.inputHandler}
+//                     value={this.state.value}
+//                     placeholder="Enter Sport"
+//                 />
+//                 {loadingElement}
+//             </div>
+//         )
 //     }
-
-//     if (!touched) {
-//         txtColor = 'black';
-//         loadingElement = null;
-//     }
-
-//     return (
-//         <div className="async-validation-container">
-//             <input
-//                 className="ag-input-field-input ag-text-field-input"
-//                 style={{ height: 40, color: txtColor, fontSize: '1rem' }}
-//                 ref={inputRef}
-//                 onInput={inputHandler}
-//                 value={value}
-//                 placeholder="Enter Sport"
-//             />
-//             {loadingElement}
-//         </div>
-//     )
-// })
-
-export default class extends Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            value: '',
-            valid: true,
-            validating: false,
-            touched: false
-        };
-
-        this.eRef = React.createRef();
-        this.debouncedAsyncInputCheck = debounce(this.asyncInputCheck, 1000);
-    }
-
-    inputHandler = e => {
-        this.setState({ touched: true });
-
-        let value = e.target.value;
-
-        this.setState({ value, validating: true }, () => {
-            this.debouncedAsyncInputCheck(value)
-        });
-    }
-
-    asyncInputCheck = value => {
-        // random time between 0 and 1000ms
-        let timeout = Math.floor(Math.random() * 1000);
-
-        new Promise((resolve, reject) => {
-            if (value === '') {
-                resolve(false);
-            } else {
-                setTimeout(() => {
-                    resolve(this.props.condition(value));
-                }, timeout);
-            }
-        })
-            .then(valid => this.setState({ valid, validating: false }))
-            .catch(err => console.log(err));
-    }
-
-    getValue = () => {
-        return this.state.value;
-    }
-
-    afterGuiAttached = () => {
-        this.setState({ value: this.props.value });
-    }
-
-    isCancelAfterEnd = () => {
-        return !this.state.valid || this.state.validating;
-    }
-
-    render() {
-        let loadingElement = null;
-        let txtColor = null;
-
-        if (this.state.validating) {
-            txtColor = 'gray';
-            loadingElement = <span className="loading"></span>
-        } else {
-            if (this.state.valid) {
-                txtColor = 'black'
-                loadingElement = <span className="success">✔</span>
-            } else {
-                txtColor = '#E91E63';
-                loadingElement = <span className="fail">✘</span>
-            }
-        }
-
-        if (!this.state.touched) {
-            txtColor = 'black';
-            loadingElement = null;
-        }
-
-        return (
-            <div className="async-validation-container">
-                <input
-                    className="ag-input-field-input ag-text-field-input"
-                    style={{ height: 40, color: txtColor, fontSize: '1rem' }}
-                    ref={this.eRef}
-                    onChange={this.inputHandler}
-                    value={this.state.value}
-                    placeholder="Enter Sport"
-                />
-                {loadingElement}
-            </div>
-        )
-    }
-}
+// }
 
