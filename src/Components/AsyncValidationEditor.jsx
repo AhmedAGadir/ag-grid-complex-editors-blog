@@ -1,6 +1,6 @@
-import React, { useState, useEffect, forwardRef, useImperativeHandle, useRef } from "react";
+import React, { useState, useEffect, forwardRef, useImperativeHandle } from "react";
 import './AsyncValidationEditor.css';
-import { debounce, useDebounce } from '../utils';
+import { useDebounce } from '../utils';
 
 export default forwardRef((props, ref) => {
     const [inputValue, setInputValue] = useState('');

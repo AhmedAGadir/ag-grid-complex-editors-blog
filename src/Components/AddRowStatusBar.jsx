@@ -3,7 +3,6 @@ import { uuid } from 'uuidv4';
 
 import './AddRowStatusBar.css'
 
-
 export default (props) => {
     let [editing, setEditing] = useState(false);
     let [id, setId] = useState(null);
