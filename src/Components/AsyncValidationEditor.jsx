@@ -10,16 +10,15 @@ export default forwardRef((props, ref) => {
 
     const debouncedInputVal = useDebounce(inputValue, 1000);
 
-    const inputHandler = e => {
-        let value = e.target.value;
+    function inputHandler(e) {
         setTouched(true);
-        setInputValue(value);
+        setInputValue(e.target.value);
         setValidating(true);
     }
 
     useEffect(() => {
-        // random time between 0 and 1000ms
-        let timeout = Math.floor(Math.random() * 1000);
+        // random time between 300 and 1000ms
+        let timeout = Math.floor(Math.random() * 700) + 300;
 
         new Promise((resolve, reject) => {
             if (inputValue === '') {
@@ -79,7 +78,7 @@ export default forwardRef((props, ref) => {
                 style={{ height: 40, color: txtColor, fontSize: '1rem' }}
                 onChange={inputHandler}
                 value={inputValue}
-                placeholder="Enter Sport"
+                placeholder={'Enter ' + props.column.colId}
             />
             {loadingElement}
         </div>
