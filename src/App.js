@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import { AgGridReact } from "ag-grid-react";
-import './App.css'
-
 import "ag-grid-enterprise";
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
@@ -10,6 +8,7 @@ import { columnDefs, defaultColDef } from './columns';
 import GridComponents from './Components';
 
 import { uuid } from 'uuidv4';
+import './App.css'
 
 
 function App() {
