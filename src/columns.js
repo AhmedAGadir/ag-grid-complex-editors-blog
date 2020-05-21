@@ -1,4 +1,4 @@
-import { OLYMPIC_SPORTS, OLYMPIC_COUNTRIES } from './olympic_data.js';
+import { OLYMPIC_SPORTS, OLYMPIC_COUNTRIES } from './olympic_lists.js';
 
 export const columnDefs = [
     {

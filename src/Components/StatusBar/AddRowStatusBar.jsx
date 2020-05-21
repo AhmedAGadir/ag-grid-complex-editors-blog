@@ -5,7 +5,6 @@ import './AddRowStatusBar.css'
 
 export default (props) => {
     let [editing, setEditing] = useState(false);
-    let [id, setId] = useState(null);
 
     useEffect(() => {
         props.api.addEventListener('rowEditingStarted', onRowEditingStarted);
@@ -23,20 +22,19 @@ export default (props) => {
 
     function onRowEditingStopped() {
         setEditing(false);
-        setId(null);
     }
 
     function addRow() {
-        setId(uuid());
-        let blankRow = { id };
-        props.api.updateRowData({ add: [blankRow] });
+        let id = uuid();
+        let emptyRow = { id };
+        props.api.updateRowData({ add: [emptyRow] });
         let node = props.api.getRowNode(id);
         props.api.ensureIndexVisible(node.rowIndex);
 
         setTimeout(() => {
             props.api.startEditingCell({
                 rowIndex: node.rowIndex,
-                colKey: 'athlete'
+                colKey: props.columnApi.getAllColumns()[0].colId
             });
         }, 300);
     }
@@ -51,60 +49,3 @@ export default (props) => {
         </div>
     )
 }
-
-
-
-
-
-// import React, { Component } from 'react';
-// import { uuid } from 'uuidv4';
-
-// import './AddRowStatusBar.css'
-
-// export default class extends Component {
-//     constructor(props) {
-//         super(props);
-//         this.state = {
-//             editing: false
-//         };
-//         this.id = null;
-//     }
-
-
-//     componentDidMount() {
-//         this.props.api.addEventListener('rowEditingStarted', () => {
-//             this.setState({ editing: true });
-//         });
-//         this.props.api.addEventListener('rowEditingStopped', () => {
-//             this.id = null;
-//             this.setState({ editing: false });
-//         });
-//     }
-
-//     addRow = () => {
-//         this.id = uuid();
-//         let blankRow = { id: this.id };
-//         this.props.api.updateRowData({ add: [blankRow] });
-//         let node = this.props.api.getRowNode(this.id);
-//         this.props.api.ensureIndexVisible(node.rowIndex);
-
-//         setTimeout(() => {
-//             this.props.api.startEditingCell({
-//                 rowIndex: node.rowIndex,
-//                 colKey: 'athlete'
-//             });
-//         }, 300);
-//     }
-
-//     render() {
-//         return (
-//             <div className="add-btn-container">
-//                 <button
-//                     variant={this.state.editing ? 'outlined' : 'contained'}
-//                     color="primary"
-//                     onClick={this.addRow}
-//                     disabled={this.state.editing}>Add Row</button>
-//             </div>
-//         );
-//     }
-// }
