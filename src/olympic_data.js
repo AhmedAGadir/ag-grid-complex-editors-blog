@@ -1,4 +1,4 @@
-export const ALL_SPORTS = [
+export const OLYMPIC_SPORTS = [
     "Swimming",
     "Gymnastics",
     "Speed Skating",
@@ -50,7 +50,7 @@ export const ALL_SPORTS = [
     "Basketball"
 ];
 
-export const ALL_COUNTRIES = [
+export const OLYMPIC_COUNTRIES = [
     "United States",
     "Russia",
     "Australia",
