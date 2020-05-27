@@ -63,5 +63,6 @@ export const columnDefs = [
 export const defaultColDef = {
     editable: true,
     filter: true,
+    floatingFilter: true,
     suppressKeyboardEvent: params => params.editing,
 };

@@ -17,9 +17,6 @@ export default forwardRef((props, ref) => {
                 setValue(props.value);
                 inputRef.current.focus();
                 inputRef.current.select();
-            },
-            isCancelAfterEnd: () => {
-                return !value;
             }
         };
     });
