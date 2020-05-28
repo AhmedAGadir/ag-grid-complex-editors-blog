@@ -62,6 +62,7 @@ export const columnDefs = [
 
 export const defaultColDef = {
     editable: true,
+    resizable: true,
     filter: true,
     floatingFilter: true,
     suppressKeyboardEvent: params => params.editing,

@@ -3,7 +3,7 @@ import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 
 export default forwardRef((props, ref) => {
-    const [value, setValue] = useState(props.value);
+    const [value, setValue] = useState('');
     const [inputValue, setInputValue] = useState('');
 
     function onChangeHandler(e, value) {
@@ -18,6 +18,9 @@ export default forwardRef((props, ref) => {
         return {
             getValue: () => {
                 return value;
+            },
+            afterGuiAttached: () => {
+                setValue(props.value)
             }
         };
     });

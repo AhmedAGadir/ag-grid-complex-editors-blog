@@ -29,7 +29,6 @@ export default forwardRef((props, ref) => {
             isCancelAfterEnd: () => {
                 return !selectedDate;
             },
-
             afterGuiAttached: () => {
                 if (!props.value) {
                     return;
